@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1230" viewBox="0 0 1600 1230"><style>text{font-family:Malgun Gothic,Arial,sans-serif}</style><rect x="0" y="0" width="1600" height="1230" rx="0" fill="#F4F7FB" stroke="#F4F7FB" stroke-width="1.5"/><text x="55" y="62.0" font-size="34" fill="#142F4C" font-weight="700" text-anchor="start">본사-지사 네트워크  |  GRE over IPsec 이중 경로</text><text x="57" y="101.0" font-size="21" fill="#597087" font-weight="400" text-anchor="start">송용 담당 구성 · 본사 코어/엣지 이중화 · 지사 2곳 · VLAN별 접속망</text><rect x="42" y="136" width="1516" height="340" rx="20" fill="#EBF2F8" stroke="#CAD8E6" stroke-width="1.5"/><text x="65" y="174.0" font-size="23" fill="#1B5267" font-weight="700" text-anchor="start">외부망과 VPN 연결</text><g transform="translate(771 165) scale(2.2916666666666665)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+</g><text x="800" y="245.0" font-size="20" fill="#263C57" font-weight="700" text-anchor="middle">ISP / 외부망</text><polyline points="800,249 800,274 200,274 200,300" fill="none" stroke="#99ADBE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="800,274 1400,274 1400,300" fill="none" stroke="#99ADBE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="580,274 580,300" fill="none" stroke="#99ADBE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1020,274 1020,300" fill="none" stroke="#99ADBE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="60" y="301" width="280" height="147" rx="16" fill="#FFFFFF" stroke="#2D7E8C" stroke-width="1.5"/><g transform="translate(77 321) scale(1.7916666666666667)" fill="none" stroke="#2D7E8C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="8" x="2" y="14" rx="2" />
+  <path d="M6.01 18H6" />
+  <path d="M10.01 18H10" />
+  <path d="M15 10v4" />
+  <path d="M17.84 7.17a4 4 0 0 0-5.66 0" />
+  <path d="M20.66 4.34a8 8 0 0 0-11.31 0" />
+</g><text x="137" y="338.0" font-size="23" fill="#193D55" font-weight="700" text-anchor="start">지사 1</text><text x="82" y="380.0" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">WAN 203.0.113.1</text><text x="82" y="404.65" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">LAN 172.10.20.0/24</text><rect x="440" y="301" width="280" height="147" rx="16" fill="#FFFFFF" stroke="#268B89" stroke-width="1.5"/><g transform="translate(457 321) scale(1.7916666666666667)" fill="none" stroke="#268B89" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="8" x="2" y="14" rx="2" />
+  <path d="M6.01 18H6" />
+  <path d="M10.01 18H10" />
+  <path d="M15 10v4" />
+  <path d="M17.84 7.17a4 4 0 0 0-5.66 0" />
+  <path d="M20.66 4.34a8 8 0 0 0-11.31 0" />
+</g><text x="517" y="338.0" font-size="23" fill="#193D55" font-weight="700" text-anchor="start">본사 Edge 1</text><text x="462" y="380.0" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">Tunnel11 · Tunnel21</text><text x="462" y="404.65" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">delay 1000 설정</text><rect x="880" y="301" width="280" height="147" rx="16" fill="#FFFFFF" stroke="#B77B39" stroke-width="1.5"/><g transform="translate(897 321) scale(1.7916666666666667)" fill="none" stroke="#B77B39" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="8" x="2" y="14" rx="2" />
+  <path d="M6.01 18H6" />
+  <path d="M10.01 18H10" />
+  <path d="M15 10v4" />
+  <path d="M17.84 7.17a4 4 0 0 0-5.66 0" />
+  <path d="M20.66 4.34a8 8 0 0 0-11.31 0" />
+</g><text x="957" y="338.0" font-size="23" fill="#193D55" font-weight="700" text-anchor="start">본사 Edge 2</text><text x="902" y="380.0" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">Tunnel12 · Tunnel22</text><text x="902" y="404.65" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">delay 5000 설정</text><rect x="1260" y="301" width="280" height="147" rx="16" fill="#FFFFFF" stroke="#2D7E8C" stroke-width="1.5"/><g transform="translate(1277 321) scale(1.7916666666666667)" fill="none" stroke="#2D7E8C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="8" x="2" y="14" rx="2" />
+  <path d="M6.01 18H6" />
+  <path d="M10.01 18H10" />
+  <path d="M15 10v4" />
+  <path d="M17.84 7.17a4 4 0 0 0-5.66 0" />
+  <path d="M20.66 4.34a8 8 0 0 0-11.31 0" />
+</g><text x="1337" y="338.0" font-size="23" fill="#193D55" font-weight="700" text-anchor="start">지사 2</text><text x="1282" y="380.0" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">WAN 203.0.113.13</text><text x="1282" y="404.65" font-size="17" fill="#52687B" font-weight="400" text-anchor="start">LAN 172.100.30.0/24</text><rect x="60" y="496" width="275" height="202" rx="16" fill="#FFFFFF" stroke="#CCD9E4" stroke-width="1.5"/><g transform="translate(81 514) scale(1.4166666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" />
+</g><text x="128" y="540.0" font-size="21" fill="#263C57" font-weight="700" text-anchor="start">지사 1 터널</text><text x="80" y="581.0" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">Tunnel11  ↔  Edge 1</text><text x="80" y="605.65" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">Tunnel12  ↔  Edge 2</text><text x="80" y="630.3" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">GRE에 IPsec 적용</text><rect x="1265" y="496" width="275" height="202" rx="16" fill="#FFFFFF" stroke="#CCD9E4" stroke-width="1.5"/><g transform="translate(1285 514) scale(1.4166666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" />
+</g><text x="1332" y="540.0" font-size="21" fill="#263C57" font-weight="700" text-anchor="start">지사 2 터널</text><text x="1285" y="581.0" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">Tunnel21  ↔  Edge 1</text><text x="1285" y="605.65" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">Tunnel22  ↔  Edge 2</text><text x="1285" y="630.3" font-size="17" fill="#263C57" font-weight="400" text-anchor="start">GRE에 IPsec 적용</text><text x="198" y="736.0" font-size="20" fill="#286F77" font-weight="700" text-anchor="middle">EIGRP 100</text><text x="1403" y="736.0" font-size="20" fill="#286F77" font-weight="700" text-anchor="middle">EIGRP 100</text><polyline points="580,449 580,590" fill="none" stroke="#527B98" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1020,449 1020,590" fill="none" stroke="#527B98" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="355" y="496" width="890" height="550" rx="20" fill="#FFFFFF" stroke="#C9D7E5" stroke-width="1.5"/><text x="382" y="535.0" font-size="23" fill="#1B5267" font-weight="700" text-anchor="start">본사 내부망  ·  OSPF Area 0</text><text x="382" y="568.0" font-size="17" fill="#61798C" font-weight="400" text-anchor="start">엣지와 코어는 이중 연결  /  포트별 결선은 GNS3 원본 참고</text><rect x="435" y="596" width="270" height="130" rx="16" fill="#EEF6F6" stroke="#91B9B8" stroke-width="1.5"/><g transform="translate(452 613) scale(1.7916666666666667)" fill="none" stroke="#2B7477" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="511" y="640.0" font-size="23" fill="#263C57" font-weight="700" text-anchor="start">Core 1</text><text x="457" y="674.0" font-size="17" fill="#48616F" font-weight="400" text-anchor="start">STP·HSRP 우선 역할</text><text x="457" y="698.65" font-size="17" fill="#48616F" font-weight="400" text-anchor="start">VLAN 10 · 20</text><rect x="895" y="596" width="270" height="130" rx="16" fill="#EEF6F6" stroke="#91B9B8" stroke-width="1.5"/><g transform="translate(912 613) scale(1.7916666666666667)" fill="none" stroke="#2B7477" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="971" y="640.0" font-size="23" fill="#263C57" font-weight="700" text-anchor="start">Core 2</text><text x="917" y="674.0" font-size="17" fill="#48616F" font-weight="400" text-anchor="start">STP·HSRP 우선 역할</text><text x="917" y="698.65" font-size="17" fill="#48616F" font-weight="400" text-anchor="start">VLAN 30 · 40</text><polyline points="705,655 895,655" fill="none" stroke="#457A91" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="705,670 895,670" fill="none" stroke="#457A91" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="800" y="638.0" font-size="17" fill="#286378" font-weight="700" text-anchor="middle">Po12 / LACP</text><polyline points="570,727 570,767 1138,767" fill="none" stroke="#7A9EAF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1030,727 1030,767 458,767" fill="none" stroke="#7A9EAF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="800" y="800.0" font-size="17" fill="#5A7281" font-weight="400" text-anchor="middle">액세스 스위치별 코어 양쪽 연결</text><polyline points="472,767 472,816" fill="none" stroke="#7A9EAF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="380" y="817" width="184" height="91" rx="12" fill="#F2F6FA" stroke="#CED9E4" stroke-width="1.5"/><g transform="translate(393 836) scale(1.2916666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="435" y="849.0" font-size="18" fill="#263C57" font-weight="700" text-anchor="start">Access 1</text><text x="472" y="885.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">VLAN 10 · Web</text><polyline points="472,909 472,930" fill="none" stroke="#A3B5C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(453 933) scale(1.5833333333333333)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" />
+</g><text x="472" y="995.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">단말 2대</text><text x="472" y="1022.0" font-size="14" fill="#637A8C" font-weight="400" text-anchor="middle">VIP 10.10.10.254</text><polyline points="692,767 692,816" fill="none" stroke="#7A9EAF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="600" y="817" width="184" height="91" rx="12" fill="#F2F6FA" stroke="#CED9E4" stroke-width="1.5"/><g transform="translate(613 836) scale(1.2916666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="655" y="849.0" font-size="18" fill="#263C57" font-weight="700" text-anchor="start">Access 2</text><text x="692" y="885.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">VLAN 20 · Data</text><polyline points="692,909 692,930" fill="none" stroke="#A3B5C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(673 933) scale(1.5833333333333333)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" />
+</g><text x="692" y="995.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">단말 2대</text><text x="692" y="1022.0" font-size="14" fill="#637A8C" font-weight="400" text-anchor="middle">VIP 10.10.20.254</text><polyline points="912,767 912,816" fill="none" stroke="#7A9EAF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="820" y="817" width="184" height="91" rx="12" fill="#F2F6FA" stroke="#CED9E4" stroke-width="1.5"/><g transform="translate(833 836) scale(1.2916666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="875" y="849.0" font-size="18" fill="#263C57" font-weight="700" text-anchor="start">Access 3</text><text x="912" y="885.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">VLAN 30 · Video</text><polyline points="912,909 912,930" fill="none" stroke="#A3B5C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(893 933) scale(1.5833333333333333)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" />
+</g><text x="912" y="995.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">단말 2대</text><text x="912" y="1022.0" font-size="14" fill="#637A8C" font-weight="400" text-anchor="middle">VIP 10.10.30.254</text><polyline points="1132,767 1132,816" fill="none" stroke="#7A9EAF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1040" y="817" width="184" height="91" rx="12" fill="#F2F6FA" stroke="#CED9E4" stroke-width="1.5"/><g transform="translate(1053 836) scale(1.2916666666666667)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="16" width="6" height="6" rx="1" />
+  <rect x="2" y="16" width="6" height="6" rx="1" />
+  <rect x="9" y="2" width="6" height="6" rx="1" />
+  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+  <path d="M12 12V8" />
+</g><text x="1095" y="849.0" font-size="18" fill="#263C57" font-weight="700" text-anchor="start">Access 4</text><text x="1132" y="885.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">VLAN 40 · Office</text><polyline points="1132,909 1132,930" fill="none" stroke="#A3B5C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(1113 933) scale(1.5833333333333333)" fill="none" stroke="#24556A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" />
+</g><text x="1132" y="995.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="middle">단말 2대</text><text x="1132" y="1022.0" font-size="14" fill="#637A8C" font-weight="400" text-anchor="middle">VIP 10.10.40.254</text><rect x="60" y="798" width="273" height="162" rx="16" fill="#FFFFFF" stroke="#CCD9E4" stroke-width="1.5"/><text x="80" y="836.0" font-size="19" fill="#263C57" font-weight="700" text-anchor="start">게이트웨이와 관리망</text><text x="80" y="875.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">업무 VLAN의 VIP는 .254</text><text x="80" y="898.2" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">VLAN 99는 관리용</text><text x="80" y="921.4" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">VLAN별 역할을 나눠 구성</text><rect x="1265" y="798" width="275" height="162" rx="16" fill="#FFFFFF" stroke="#CCD9E4" stroke-width="1.5"/><text x="1285" y="836.0" font-size="19" fill="#263C57" font-weight="700" text-anchor="start">경로 선택과 검증</text><text x="1285" y="875.0" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">터널 delay 차등 설정</text><text x="1285" y="898.2" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">이웃·메트릭·다음 홉 확인</text><text x="1285" y="921.4" font-size="16" fill="#263C57" font-weight="400" text-anchor="start">중단 후 우회·복귀 기록</text><rect x="42" y="1073" width="1516" height="112" rx="14" fill="#E8F0F5" stroke="#CAD8E6" stroke-width="1.5"/><text x="65" y="1107.0" font-size="19" fill="#234D65" font-weight="700" text-anchor="start">읽는 순서</text><text x="190" y="1107.0" font-size="20" fill="#25485D" font-weight="400" text-anchor="start">외부망과 지사 터널 → 본사 엣지 → 코어 이중화 → VLAN별 단말</text><text x="65" y="1144.0" font-size="16" fill="#5B7488" font-weight="400" text-anchor="start">논리 구성도이며 포트별 연결은 상단 GNS3 원본이 기준입니다. 주소와 설정은 보관한 실습 자료를 따릅니다.</text><text x="1538" y="1211.0" font-size="13" fill="#748798" font-weight="400" text-anchor="end">아이콘: Lucide · ISC license</text></svg>
