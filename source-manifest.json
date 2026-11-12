@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-12",
+  "files": [
+    {
+      "source": "Config\\Topology 1\\컨피그\\BRANCH\\BRANCH1.txt",
+      "export": "configs/topology1/BRANCH/BRANCH1.txt",
+      "source_sha256": "66c95be476e5c0706340e867f840b3be82f9b615baab035c2b7be7b377d9b4ee"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\BRANCH\\BRANCH2.txt",
+      "export": "configs/topology1/BRANCH/BRANCH2.txt",
+      "source_sha256": "9f1e0b84f3de7f320bf00d74f7a1487fb64704a9f5b9c17b1f3f3b490008e2a6"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\BRANCH\\BRANCH3.txt",
+      "export": "configs/topology1/BRANCH/BRANCH3.txt",
+      "source_sha256": "fbac720181491b742e899177e7195d37d388e29a0e471bdbdf9abae03ca12990"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\BRANCH\\BRANCH4.txt",
+      "export": "configs/topology1/BRANCH/BRANCH4.txt",
+      "source_sha256": "ac528593ece635fd2cdfce69b95ed02c14cc964d7ebb0289b80195f459a8183b"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ ROUTER\\HQ-EDGE-1.txt",
+      "export": "configs/topology1/HQ ROUTER/HQ-EDGE-1.txt",
+      "source_sha256": "7632df6cf68920db9e4bdf749b08f71d4373337470c25f4f9e7f6abcc6400076"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ ROUTER\\HQ-EDGE-2.txt",
+      "export": "configs/topology1/HQ ROUTER/HQ-EDGE-2.txt",
+      "source_sha256": "20e13dd940c23a1b2d4eebf23119bbcf231281cf6659bad058bd5c48807b4c12"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-ACCESS-1.txt",
+      "export": "configs/topology1/HQ SW/HQ-ACCESS-1.txt",
+      "source_sha256": "ac9df582a40a819a7fb2258e865555abef4656574632d46ada49b6e3a6778bec"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-ACCESS-2.txt",
+      "export": "configs/topology1/HQ SW/HQ-ACCESS-2.txt",
+      "source_sha256": "cd2261dcf4f9e2e0d8a3f42558fb6ed8f4ce789bf59c958b90d007af21377340"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-ACCESS-3.txt",
+      "export": "configs/topology1/HQ SW/HQ-ACCESS-3.txt",
+      "source_sha256": "ee8df97cd84b4aef7e3ad3fa4e984f9fbae6cc76d0824d0ac5462471b39cdeae"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-ACCESS-4.txt",
+      "export": "configs/topology1/HQ SW/HQ-ACCESS-4.txt",
+      "source_sha256": "3ab7f134f3ac7e9e95a5a21e4fe061a3f6eff04f928f046adcdaa488e9055941"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-CORE-1.txt",
+      "export": "configs/topology1/HQ SW/HQ-CORE-1.txt",
+      "source_sha256": "c1d3cb9523da137187cfc53ea6a7f64f4d958121bbca34b1b584c21aea122292"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\HQ SW\\HQ-CORE-2.txt",
+      "export": "configs/topology1/HQ SW/HQ-CORE-2.txt",
+      "source_sha256": "925faf4fbacb3725ac2bf3605c987f144731e2aa170df116e82f9f1023e3cb79"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\R-SIP, VPC, 웹서버\\R-ISP.txt",
+      "export": "configs/topology1/R-SIP, VPC, 웹서버/R-ISP.txt",
+      "source_sha256": "e16d28a546ac309013a8eef44f058bd4aa1615b266d18e04720d5f60a5d1f6d1"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\R-SIP, VPC, 웹서버\\VPC 기본 컨피그.txt",
+      "export": "configs/topology1/R-SIP, VPC, 웹서버/VPC 기본 컨피그.txt",
+      "source_sha256": "b20c59eba3b725f9780c248be7dc0493e0fce6a407abd42174ada4a3188da363"
+    },
+    {
+      "source": "Config\\Topology 1\\컨피그\\R-SIP, VPC, 웹서버\\웹서버 기본컨피그.txt",
+      "export": "configs/topology1/R-SIP, VPC, 웹서버/웹서버 기본컨피그.txt",
+      "source_sha256": "dd46abdbf4f6025a43ee4a8e37d4b72b7c2fa54e323cecaad6c046bcb9581c99"
+    },
+    {
+      "source": "Config\\Topology 2\\Router-Config.txt",
+      "export": "configs/topology2/Router-Config.txt",
+      "source_sha256": "24f7419c01df3251c30f4a3e81e3c11ba7eca49ccfe2dc93495a0f0dbf8faca2"
+    },
+    {
+      "source": "Config\\Topology 2\\SW-Config.txt",
+      "export": "configs/topology2/SW-Config.txt",
+      "source_sha256": "12523e21d5223b2403f8f61ee3fb4f87eb3815f7285b6b479ee6611f1a6c08bf"
+    },
+    {
+      "source": "Config\\Topology 2\\tunnel ip.txt",
+      "export": "configs/topology2/tunnel ip.txt",
+      "source_sha256": "b5487e37c52fcd4a239db71002eb23fed3b25ce8643d49eb1aae7442f67c7a98"
+    }
+  ],
+  "changes": [
+    "인증값 대체",
+    "개행 정규화",
+    "빈 줄 축약"
+  ],
+  "lab_executed": false
+}

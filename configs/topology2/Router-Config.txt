@@ -1,0 +1,558 @@
+! 공개용 보관본: 인증값 대체, 원본 오류/미완성 명령 포함. 일괄 실행하지 마세요.
+# R-HQ-EDGE1
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname R-HQ-EDGE1
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+interface Gi 0/0
+ ip address 203.0.113.5 255.255.255.252
+ no sh
+!
+interface Gi 1/0
+ ip address 172.168.10.1 255.255.255.252
+ no sh
+!
+interface Gi 2/0
+ ip address 172.168.10.9 255.255.255.252
+ no sh
+!
+interface Gi 3/0
+ ip address 172.168.10.5 255.255.255.252
+ no sh
+!
+route-map EIGRP-TO-OSPF deny 10
+ match tag 200 
+! 
+route-map EIGRP-TO-OSPF permit 20
+ set tag 100                        # EIGRP->OSPF 로 재분배된 IP들에 대해서 Tagging
+!
+route-map OSPF-TO-EIGRP deny 10
+ match tag 100
+!
+route-map OSPF-TO-EIGRP permit 20
+ set tag 200
+ # EIGRP->OSPF 로 재분배된 IP들에 대해서 Tagging / OPSF는 TAG 200, EIGRP는 TAG 100 (루프방지)
+ # 서로 다른 라우팅 프로토콜(EIGRP ↔ OSPF) 간에 경로를 넘겨줄 때, 내가 넘겨준 경로가 다시 나에게 돌아오지 않도록 Tag
+!
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface default
+ no passive-interface Gi 0/0
+ no passive-interface Gi 1/0
+ no passive-interface Gi 2/0
+ no passive-interface Gi 3/0
+ network 172.168.10.0 0.0.0.3 area 0
+ network 172.168.10.4 0.0.0.3 area 0
+ network 172.168.10.8 0.0.0.3 area 0
+ redistribute eigrp 100 subnets route-map EIGRP-TO-OSPF # eigrp 정보 가져오면서 route-map을 통해 루프 방지
+ default-information originate # OSPF에게 Default Route(0.0.0.0/0) 광고
+!
+router eigrp 100
+ no auto-summary
+ passive-interface default
+ no passive-interface tunnel 11
+ no passive-interface tunnel 21
+ network 192.168.10.0 0.0.0.3
+ network 192.168.20.0 0.0.0.3
+ distance eigrp 90 109 # 라우팅 우선권을 위해서 OSPF(110)보다 AD 값을 낮춤
+ # 재분배 시 특정 경로가 OSPF를 거쳐 다시 EIGRP로 들어올 때, 더 낮은 AD 값을 가진 경로를 선택하게 하여 최적 경로를 유지하거나 루프를 제어하기 위함
+ redistribute ospf 1 metric 10000 100 255 1 1500 route-map OSPF-TO-EIGRP
+!
+interface tunnel 11
+ ip address 192.168.10.2 255.255.255.252
+ tunnel source gi 0/0
+ tunnel destination 203.0.113.1
+ delay 1000
+!
+interface tunnel 21
+ ip address 192.168.20.2 255.255.255.252
+ tunnel source gi 0/0
+ tunnel destination 203.0.113.13
+ delay 1000
+!
+ip access-list extend NAT_ACL
+ deny ip 10.10.10.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 172.10.20.0 0.0.0.255
+ permit ip 10.10.10.0 0.0.0.255 any
+ permit ip 10.10.20.0 0.0.0.255 any
+ permit ip 10.10.30.0 0.0.0.255 any
+ permit ip 10.10.40.0 0.0.0.255 any
+ permit ip 172.168.10.0 0.0.0.255 any
+ permit ip 172.10.20.0 0.0.0.255 any
+ permit ip 172.100.30.0 0.0.0.255 any
+!
+ip nat pool EDGE1_NAT 203.0.113.5 203.0.113.5 netmask 255.255.255.0
+ip nat inside source list NAT_ACL pool EDGE1_NAT overload
+!
+interface gi 1/0
+ ip nat inside
+!
+interface gi 2/0
+ ip nat inside
+!
+interface gi 3/0
+ ip nat inside
+!
+interface gi 0/0
+ ip nat outside
+!
+crypto isakmp enable 
+!
+crypto isakmp identity address # IPsec을 위한 ike인증모드를 ip 주소 기반으로 설정
+!
+crypto isakmp policy 10
+ authentication pre-share # PSK(사전 공유 키) 인증 방식
+ encryption aes 128       # 데이터 암호화 알고리즘
+ hash sha                 # 데이터 무결성 체크 알고리즘
+ group 2                  # DH 키 교환 그룹
+ lifetime 86400           # 유효 시간
+!
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.1
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.13
+!
+crypto ipsec transform-set BR esp-aes 128 esp-sha-hmac
+ mode tunnel # 데이터 패킷 전체를 캡슐화하는 터널 모드 사용
+!
+crypto ipsec profile IPSEC_BR
+ set transform-set BR
+!
+interface tunnel 11
+ tunnel protection ipsec profile IPSEC_BR
+!
+interface tunnel 21
+ tunnel protection ipsec profile IPSEC_BR
+!
+ip route 203.0.113.1 255.255.255.255 203.0.113.6
+ip route 203.0.113.13 255.255.255.255 203.0.113.6
+ip route 0.0.0.0 0.0.0.0 203.0.113.6
+
+=========================================
+
+# R-HQ-EDGE2
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname R-HQ-EDGE2
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+interface Gi 0/0
+ ip address 203.0.113.9 255.255.255.252
+ no sh
+!
+interface Gi 1/0
+ ip address 172.168.10.2 255.255.255.252
+ no sh
+!
+interface Gi 2/0
+ ip address 172.168.10.13 255.255.255.252
+ no sh
+!
+interface Gi 3/0
+ ip address 172.168.10.17 255.255.255.252
+ no sh
+!
+route-map EIGRP-TO-OSPF deny 10
+ match tag 200 
+! 
+route-map EIGRP-TO-OSPF permit 20
+ set tag 100    
+!
+route-map OSPF-TO-EIGRP deny 10
+ match tag 100
+!
+route-map OSPF-TO-EIGRP permit 20
+ set tag 200
+!
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface default
+ no passive-interface Gi 0/0
+ no passive-interface Gi 1/0
+ no passive-interface Gi 2/0
+ no passive-interface Gi 3/0
+ network 172.168.10.0 0.0.0.3 area 0
+ network 172.168.10.12 0.0.0.3 area 0
+ network 172.168.10.16 0.0.0.3 area 0
+ redistribute eigrp 100 subnets route-map EIGRP-TO-OSPF
+ default-information originate metric 50
+!
+router eigrp 100
+ no auto-summary
+ passive-interface default
+ no passive-interface tunnel 12
+ no passive-interface tunnel 22
+ network 192.168.20.4 0.0.0.3
+ network 192.168.10.4 0.0.0.3
+ distance eigrp 90 109
+ redistribute ospf 1 metric 10000 100 255 1 1500 route-map OSPF-TO-EIGRP
+!
+interface tunnel 12
+ ip address 192.168.10.6 255.255.255.252
+ tunnel source gi 0/0
+ tunnel destination 203.0.113.1
+ delay 5000
+!
+interface tunnel 22
+ ip address 192.168.20.6 255.255.255.252
+ tunnel source gi 0/0
+ tunnel destination 203.0.113.13
+ delay 5000
+!
+ip access-list extend NAT_ACL
+ deny ip 10.10.10.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.10.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.30.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 10.10.40.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 172.10.20.0 0.0.0.255
+ deny ip 172.168.10.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 172.10.20.0 0.0.0.255 172.100.30.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 172.168.10.0 0.0.0.255
+ deny ip 172.100.30.0 0.0.0.255 172.10.20.0 0.0.0.255
+ permit ip 10.10.10.0 0.0.0.255 any
+ permit ip 10.10.20.0 0.0.0.255 any
+ permit ip 10.10.30.0 0.0.0.255 any
+ permit ip 10.10.40.0 0.0.0.255 any
+ permit ip 172.168.10.0 0.0.0.255 any
+ permit ip 172.10.20.0 0.0.0.255 any
+ permit ip 172.100.30.0 0.0.0.255 any
+!
+ip nat pool EDGE2_NAT 203.0.113.9 203.0.113.9 netmask 255.255.255.0
+ip nat inside source list NAT_ACL pool EDGE2_NAT overload
+!
+interface gi 1/0
+ ip nat inside
+!
+interface gi 2/0
+ ip nat inside
+!
+interface gi 3/0
+ ip nat inside
+!
+interface gi 0/0
+ ip nat outside
+!
+crypto isakmp enable 
+!
+crypto isakmp identity address
+!
+crypto isakmp policy 10
+ authentication pre-share
+ encryption aes 128
+ hash sha
+ group 2
+ lifetime 86400
+!
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.1
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.13
+!
+crypto ipsec transform-set BR esp-aes 128 esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile IPSEC_BR
+ set transform-set BR
+ !
+interface tunnel 12
+ tunnel protection ipsec profile IPSEC_BR
+!
+interface tunnel 22
+ tunnel protection ipsec profile IPSEC_BR
+!
+ip route 203.0.113.1 255.255.255.255 203.0.113.10
+ip route 203.0.113.13 255.255.255.255 203.0.113.10
+ip route 0.0.0.0 0.0.0.0 203.0.113.10 100
+
+=========================================
+
+# Branch - 1
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname BRANCH1
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+interface fa 0/0
+ ip address 203.0.113.1 255.255.255.252
+ no sh
+!
+interface fa 0/1
+ ip address 172.10.20.254 255.255.255.0
+ no sh
+!
+router eigrp 100
+ no auto-summary
+ passive-interface default
+ no passive-interface tunnel 11
+ no passive-interface tunnel 12
+ maximum-paths 1
+ network 172.10.20.0 0.0.0.255
+ network 192.168.10.0 0.0.0.3
+ network 192.168.10.4 0.0.0.3
+!
+interface tunnel 11
+ ip address 192.168.10.1 255.255.255.252
+ tunnel source fa 0/0
+ tunnel destination 203.0.113.5
+!
+interface tunnel 12
+ ip address 192.168.10.5 255.255.255.252
+ tunnel source fa 0/0
+ tunnel destination 203.0.113.9
+!
+access-list 1 permit 172.10.20.0 0.0.0.255
+!
+ip nat pool BRANCH1_NAT 203.0.113.1 203.0.113.1 netmask 255.255.255.0
+ip nat inside source list 1 pool BRANCH1_NAT overload
+!
+interface fastethernet 0/1
+ ip nat inside
+!
+interface fastethernet 0/0
+ ip nat outside
+!
+crypto isakmp enable
+!
+crypto isakmp identity address
+!
+crypto isakmp policy 10
+ authentication pre-share
+ encryption aes 128
+ hash sha
+ group 2
+ lifetime 86400
+!
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.5
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.9
+!
+crypto ipsec transform-set BR esp-aes 128 esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile IPSEC_HQ
+ set transform-set BR
+!
+interface tunnel 11
+ tunnel protection ipsec profile IPSEC_HQ
+!
+interface tunnel 12
+ tunnel protection ipsec profile IPSEC_HQ
+!
+ip route 203.0.113.5 255.255.255.255 203.0.113.2
+ip route 203.0.113.9 255.255.255.255 203.0.113.2
+ip route 0.0.0.0 0.0.0.0 203.0.113.2
+=========================================
+
+# Branch - 2
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname BRANCH2
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+interface fa 0/0
+ ip address 203.0.113.13 255.255.255.252
+ no sh
+!
+interface fa 0/1
+ ip address 172.100.30.254 255.255.255.0
+ no sh
+!
+router eigrp 100
+ no auto-summary
+ passive-interface default
+ no passive-interface tunnel 21
+ no passive-interface tunnel 22
+ maximum-paths 1
+ network 172.100.30.0 0.0.0.255
+ network 192.168.20.0 0.0.0.3
+ network 192.168.20.4 0.0.0.3
+!
+interface tunnel 21
+ ip address 192.168.20.1 255.255.255.252
+ tunnel source fa 0/0
+ tunnel destination 203.0.113.5
+!
+interface tunnel 22
+ ip address 192.168.20.5 255.255.255.252
+ tunnel source fa 0/0
+ tunnel destination 203.0.113.9
+!
+access-list 1 permit 172.100.30.0 0.0.0.255
+!
+ip nat pool BRANCH2_NAT 203.0.113.13 203.0.113.13 netmask 255.255.255.0
+ip nat inside source list 1 pool BRANCH2_NAT overload
+!
+interface fastethernet 0/1
+ ip nat inside
+!
+interface fastethernet 0/0
+ ip nat outside
+!
+crypto isakmp enable 
+!
+crypto isakmp identity address
+!
+crypto isakmp policy 10
+ authentication pre-share
+ encryption aes 128
+ hash sha
+ group 2
+ lifetime 86400
+!
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.5
+crypto isakmp key 0 REPLACE_SECRET_6 address 203.0.113.9
+!
+crypto ipsec transform-set BR esp-aes 128 esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile IPSEC_HQ
+ set transform-set BR
+!
+interface tunnel 21
+ tunnel protection ipsec profile IPSEC_HQ
+!
+interface tunnel 22
+ tunnel protection ipsec profile IPSEC_HQ
+!
+ip route 203.0.113.5 255.255.255.255 203.0.113.14
+ip route 203.0.113.9 255.255.255.255 203.0.113.14
+ip route 0.0.0.0 0.0.0.0 203.0.113.14
+
+=========================================
+
+# R-ISP
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname R-ISP
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+interface gi 0/0
+ ip address 203.0.113.6 255.255.255.252
+ no sh
+!
+interface gi 1/0
+ ip address 203.0.113.10 255.255.255.252
+ no sh
+!
+interface fa 5/0
+ ip address 203.0.113.2 255.255.255.252
+ no sh
+!
+interface fa 5/1
+ ip address 203.0.113.14 255.255.255.252
+ no sh
+!

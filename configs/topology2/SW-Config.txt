@@ -1,0 +1,441 @@
+! 공개용 보관본: 인증값 대체, 원본 오류/미완성 명령 포함. 일괄 실행하지 마세요.
+# SW-CORE 1
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-CORE1
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+ip routing # L3 스위칭(라우팅) 기능 활성화
+!
+spanning-tree mode rapid-pvst # Spanning-tree mode 변경
+!
+interface port-channel 12
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ no switchport
+ ip address 172.168.10.6 255.255.255.252
+ no sh
+!
+interface gi0/1
+ no switchport
+ ip address 172.168.10.14 255.255.255.252
+ no sh
+!
+interface range gi1/0-3
+ no sh
+!
+interface range gi0/2-3 
+ switchport trunk encapsulation dot1q
+ switchport mode trunk 
+ switchport trunk allowed vlan 10,20,30,40,99
+ channel-protocol lacp # LACP 모드로 Port-channel 구성
+ channel-group 12 mode active
+ no sh
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode server
+!
+end
+!
+vtp primary vlan
+!
+conf t
+!
+spanning-tree vlan 1,10,20,99 root primary # Vlan 1,10,20,99 에 대해서 primary로 지정
+spanning-tree vlan 30,40 root secondary
+!
+port-channel load-balance src-dst-ip # 출발지/목적지 IP 기반 트래픽 분산
+!
+vlan 10
+ name Web
+vlan 20
+ name Data
+vlan 30
+ name Video
+vlan 40
+ name Office
+vlan 99
+ name mgmt
+!
+interface range gi1/0 - 3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40
+ no sh
+!
+track 1 interface gi0/0 line-protocol
+track 2 interface gi0/1 line-protocol # gi 0/0, gi 0/1에 대해서 상태 추적
+!
+track 10 list boolean or
+ object 1
+ object 2
+!
+interface vlan 10
+ no sh
+ ip address 10.10.10.252 255.255.255.0
+ standby 10 ip 10.10.10.254
+ standby 10 priority 150
+ standby 10 timer 1 3
+ standby 10 preempt delay mini 60 # 장비 복구 시 60초 대기 후 전환
+ standby 10 track 10 decrement 100 # 실패 시 우선순위 감소
+!
+interface vlan 20
+ no sh
+ ip address 10.10.20.252 255.255.255.0
+ standby 20 ip 10.10.20.254
+ standby 20 priority 150
+ standby 20 timer 1 3
+ standby 20 preempt delay mini 60
+ standby 20 track 10 decrement 100
+!
+interface vlan 30
+ no sh
+ ip address 10.10.30.252 255.255.255.0
+ standby 30 ip 10.10.30.254
+ standby 30 priority 100
+ standby 30 timer 1 3
+ standby 30 preempt
+!
+interface vlan 40
+ no sh
+ ip address 10.10.40.252 255.255.255.0
+ standby 40 ip 10.10.40.254
+ standby 40 priority 100
+ standby 40 timer 1 3
+ standby 40 preempt
+!
+interface vlan 99
+ ip address 10.10.99.1 255.255.255.0
+ no sh
+!
+router ospf 1
+ router-id 11.11.11.11
+ passive-interface default
+ no passive-interface Gi 0/0
+ no passive-interface GI 0/1
+ no passive-interface Port-channel 12
+ no passive-interface vlan 99
+ network 10.10.10.0 0.0.0.255 area 0
+ network 10.10.20.0 0.0.0.255 area 0
+ network 10.10.30.0 0.0.0.255 area 0
+ network 10.10.40.0 0.0.0.255 area 0
+ network 10.10.99.0 0.0.0.255 area 0
+ network 172.168.10.4 0.0.0.3 area 0
+ network 172.168.10.12 0.0.0.3 area 0
+!
+======================================
+# SW-CORE 2
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-CORE2
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+ip routing
+!
+spanning-tree mode rapid-pvst
+!
+interface port-channel 12
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ no switchport
+ ip address 172.168.10.18 255.255.255.252
+ no sh
+!
+interface gi0/1
+ no switchport
+ ip address 172.168.10.10 255.255.255.252
+ no sh
+!
+interface range gi1/0-3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40
+ no sh
+!
+interface range gi0/2-3 
+ switchport trunk encapsulation dot1q
+ switchport mode trunk 
+ switchport trunk allowed vlan 10,20,30,40,99
+ channel-protocol lacp
+ channel-group 12 mode active
+ no sh
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode server
+!
+spanning-tree vlan 30,40 root primary            # Vlan 30, 40 에 대해서 primary로 지정
+spanning-tree vlan 1,10,20,99 root secondary
+!
+port-channel load-balance src-dst-ip
+!
+track 1 interface gi0/0 line-protocol
+track 2 interface gi0/1 line-protocol 
+!
+track 10 list boolean or
+ object 1
+ object 2
+!
+interface vlan 10
+ no sh
+ ip address 10.10.10.253 255.255.255.0
+ standby 10 ip 10.10.10.254
+ standby 10 priority 100
+ standby 10 timer 1 3
+ standby 10 preempt
+!
+interface vlan 20
+ no sh
+ ip address 10.10.20.253 255.255.255.0
+ standby 20 ip 10.10.20.254
+ standby 20 priority 100
+ standby 20 timer 1 3
+ standby 20 preempt
+!
+interface vlan 30
+ no sh
+ ip address 10.10.30.253 255.255.255.0
+ standby 30 ip 10.10.30.254
+ standby 30 priority 150
+ standby 30 timer 1 3
+ standby 30 preempt delay mini 60
+ standby 30 track 10 decrement 100
+!
+interface vlan 40
+ no sh
+ ip address 10.10.40.253 255.255.255.0
+ standby 40 ip 10.10.40.254
+ standby 40 priority 150
+ standby 40 timer 1 3
+ standby 40 preempt delay mini 60
+ standby 40 track 10 decrement 100
+!
+interface vlan 99
+ ip address 10.10.99.2 255.255.255.0
+ no sh
+!
+router ospf 1
+ router-id 22.22.22.22
+ passive-interface default
+ no passive-interface Gi 0/0
+ no passive-interface GI 0/1
+ no passive-interface Port-channel 12
+ no passive-interface vlan 99
+ network 10.10.10.0 0.0.0.255 area 0
+ network 10.10.20.0 0.0.0.255 area 0
+ network 10.10.30.0 0.0.0.255 area 0
+ network 10.10.40.0 0.0.0.255 area 0
+ network 10.10.99.0 0.0.0.255 area 0
+ network 172.168.10.16 0.0.0.3 area 0
+ network 172.168.10.8 0.0.0.3 area 0
+!
+
+===========================================
+
+# SW-ACCESS 1
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-ACCESS1
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+conf t
+!
+spanning-tree mode rapid-pvst
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode client
+!
+interface range gi0/0 - 1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ spanning-tree vlan 10 cost 10 # Cost Down 으로 인해 우선 경로 지정
+interface gi0/1
+ spanning-tree vlan 10 cost 100 # Cost Up 으로 인해 백업 경로 지정 
+!
+interface range gi0/2-3
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree bpduguard enable # Loop 방지를 위해서 BPDU 수신시 포트 차단
+ spanning-tree portfast # 최적화를 위해서 스패닝트리 대기 과정 없이 Forwarding 상태로 전환
+ no sh
+!
+end
+!
+
+======================================
+
+# SW-ACCESS 2
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-ACCESS2
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+spanning-tree mode rapid-pvst
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode client
+!
+interface range gi0/0 - 1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ spanning-tree vlan 20 cost 10
+interface gi0/1
+ spanning-tree vlan 20 cost 100
+!
+interface range gi0/2-3
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree bpduguard enable
+ spanning-tree portfast
+ no sh
+!
+end
+!
+
+======================================
+
+# SW-ACCESS 3
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-ACCESS3
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+spanning-tree mode rapid-pvst
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode client
+!
+interface range gi0/0 - 1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ spanning-tree vlan 30 cost 10
+interface gi0/1
+ spanning-tree vlan 30 cost 100
+!
+interface range gi0/2-3
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree bpduguard enable
+ spanning-tree portfast
+ no sh
+!
+end
+!
+
+======================================
+
+# SW-ACCESS 4
+
+en
+conf t
+!
+no ip domain-lookup
+!
+hostname SW-ACCESS4
+!
+line con 0
+ logging syn
+ exec-timeout 0 0
+ password REPLACE_SECRET_5
+ login
+!
+spanning-tree mode rapid-pvst
+!
+vtp password REPLACE_SECRET_4
+vtp domain HQ
+vtp version 3
+vtp mode client
+!
+interface range gi0/0 - 1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,99
+ no sh
+!
+interface gi0/0
+ spanning-tree vlan 40 cost 10
+interface gi0/1
+ spanning-tree vlan 40 cost 100
+!
+interface range gi0/2-3
+ switchport mode access
+ switchport access vlan 40
+ spanning-tree bpduguard enable
+ spanning-tree portfast
+ no sh
+!
+end
+!
